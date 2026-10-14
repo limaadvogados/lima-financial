@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, Receipt, RefreshCw, ClipboardCheck, CalendarDays, Scale } from "lucide-react";
+import { LayoutDashboard, Receipt, RefreshCw, ClipboardCheck, CalendarDays, Landmark, Scale } from "lucide-react";
 
 const NAV = [
   { to: "/", label: "Painel", icon: LayoutDashboard, end: true },
   { to: "/lancamentos", label: "Lançamentos", icon: Receipt, end: false },
   { to: "/assinaturas", label: "Assinaturas", icon: RefreshCw, end: false },
   { to: "/fechamento", label: "Fechamento", icon: ClipboardCheck, end: false },
+  { to: "/recebimentos", label: "Recebimentos", icon: Landmark, end: false },
   { to: "/calendario", label: "Calendário", icon: CalendarDays, end: false },
 ];
 

@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Lancamentos from "./pages/Lancamentos";
 import Assinaturas from "./pages/Assinaturas";
 import Fechamento from "./pages/Fechamento";
+import Recebimentos from "./pages/Recebimentos";
 import Calendario from "./pages/Calendario";
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
               <Route path="/lancamentos" element={<Lancamentos />} />
               <Route path="/assinaturas" element={<Assinaturas />} />
               <Route path="/fechamento" element={<Fechamento />} />
+              <Route path="/recebimentos" element={<Recebimentos />} />
               <Route path="/calendario" element={<Calendario />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
