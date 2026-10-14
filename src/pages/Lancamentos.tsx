@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Plus, Search, Pencil, Trash2, FileText, Check, X } from "lucide-react";
 import { useData } from "../context/DataContext";
 import { useMonth } from "../context/MonthContext";
@@ -13,9 +14,22 @@ export default function Lancamentos() {
   const { lancamentos, loading, excluirLancamento } = useData();
   const { mes } = useMonth();
 
-  const [escopo, setEscopo] = useState<"mes" | "todos">("mes");
-  const [tipo, setTipo] = useState<TipoLancamento | "todos">("todos");
-  const [status, setStatus] = useState<"todos" | "pago" | "pendente">("todos");
+  const [params] = useSearchParams();
+  const [escopo, setEscopo] = useState<"mes" | "todos">(
+    params.get("escopo") === "todos" ? "todos" : "mes"
+  );
+  const [tipo, setTipo] = useState<TipoLancamento | "todos">(() => {
+    const t = params.get("tipo");
+    return t === "assinatura" || t === "reembolso" || t === "compra" ? t : "todos";
+  });
+  const [status, setStatus] = useState<"todos" | "pago" | "pendente">(() => {
+    const s = params.get("status");
+    return s === "pago" || s === "pendente" ? s : "todos";
+  });
+  const [recibo, setRecibo] = useState<"todos" | "com" | "sem">(() => {
+    const r = params.get("recibo");
+    return r === "com" || r === "sem" ? r : "todos";
+  });
   const [busca, setBusca] = useState("");
 
   const [modalAberto, setModalAberto] = useState(false);
@@ -28,11 +42,13 @@ export default function Lancamentos() {
       if (escopo === "mes" && mesDoLancamento(l.data) !== mes) return false;
       if (tipo !== "todos" && l.tipo !== tipo) return false;
       if (status !== "todos" && l.status !== status) return false;
+      if (recibo === "com" && !l.tem_recibo) return false;
+      if (recibo === "sem" && l.tem_recibo) return false;
       if (q && !l.descricao.toLowerCase().includes(q) && !(l.categoria ?? "").toLowerCase().includes(q))
         return false;
       return true;
     });
-  }, [lancamentos, escopo, mes, tipo, status, busca]);
+  }, [lancamentos, escopo, mes, tipo, status, recibo, busca]);
 
   async function verRecibo(l: Lancamento) {
     if (!l.recibo_url) return;
@@ -90,6 +106,11 @@ export default function Lancamentos() {
           <option value="todos">Todos os status</option>
           <option value="pago">Pago</option>
           <option value="pendente">Pendente</option>
+        </select>
+        <select className="field w-auto" value={recibo} onChange={(e) => setRecibo(e.target.value as any)}>
+          <option value="todos">Recibo: todos</option>
+          <option value="com">Com recibo</option>
+          <option value="sem">Sem recibo</option>
         </select>
       </div>
 

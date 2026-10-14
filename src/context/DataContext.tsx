@@ -13,8 +13,6 @@ import type {
   Lancamento,
   LancamentoInput,
 } from "../lib/types";
-import { useAuth } from "./AuthContext";
-
 interface DataValue {
   assinaturas: Assinatura[];
   lancamentos: Lancamento[];
@@ -31,7 +29,6 @@ interface DataValue {
 const Ctx = createContext<DataValue | undefined>(undefined);
 
 export function DataProvider({ children }: { children: ReactNode }) {
-  const { session } = useAuth();
   const [assinaturas, setAssinaturas] = useState<Assinatura[]>([]);
   const [lancamentos, setLancamentos] = useState<Lancamento[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,8 +51,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (session) recarregar();
-  }, [session, recarregar]);
+    recarregar();
+  }, [recarregar]);
 
   async function salvarLancamento(input: LancamentoInput, id?: string) {
     const res = id

@@ -1,16 +1,15 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, Receipt, RefreshCw, ClipboardCheck, Scale, LogOut } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { LayoutDashboard, Receipt, RefreshCw, ClipboardCheck, CalendarDays, Scale } from "lucide-react";
 
 const NAV = [
   { to: "/", label: "Painel", icon: LayoutDashboard, end: true },
   { to: "/lancamentos", label: "Lançamentos", icon: Receipt, end: false },
   { to: "/assinaturas", label: "Assinaturas", icon: RefreshCw, end: false },
   { to: "/fechamento", label: "Fechamento", icon: ClipboardCheck, end: false },
+  { to: "/calendario", label: "Calendário", icon: CalendarDays, end: false },
 ];
 
 export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
-  const { session, sair } = useAuth();
   return (
     <div className="flex h-full flex-col bg-brand-900 text-white">
       <div className="flex items-center gap-2.5 px-5 pb-6 pt-6">
@@ -45,15 +44,7 @@ export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
       </nav>
 
       <div className="border-t border-white/10 px-5 py-4">
-        <p className="truncate text-xs text-white/50" title={session?.user.email ?? ""}>
-          {session?.user.email}
-        </p>
-        <button
-          onClick={sair}
-          className="mt-2 flex items-center gap-2 text-sm text-white/70 hover:text-white"
-        >
-          <LogOut size={16} /> Sair
-        </button>
+        <p className="text-xs text-white/40">Lima Advocacia · uso interno</p>
       </div>
     </div>
   );

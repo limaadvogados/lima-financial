@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   CheckCircle2,
   AlertTriangle,
@@ -21,6 +23,19 @@ import type { Lancamento } from "../lib/types";
 export default function Fechamento() {
   const { assinaturas, lancamentos, loading, marcarReembolsado } = useData();
   const { mes } = useMonth();
+  const [params] = useSearchParams();
+  const foco = params.get("foco");
+
+  useEffect(() => {
+    if (!foco || loading) return;
+    const el = document.getElementById(`bloco-${foco}`);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      el.classList.add("ring-2", "ring-brand-600/50");
+      const t = setTimeout(() => el.classList.remove("ring-2", "ring-brand-600/50"), 2200);
+      return () => clearTimeout(t);
+    }
+  }, [foco, loading]);
 
   if (loading) return <p className="py-20 text-center text-ink-400">Carregando…</p>;
 
@@ -73,7 +88,7 @@ export default function Fechamento() {
       </div>
 
       {/* Bloco A — Assinaturas esperadas × cobradas */}
-      <section className="card">
+      <section id="bloco-assinaturas" className="card scroll-mt-24 transition">
         <div className="flex items-center justify-between border-b border-line px-5 py-3">
           <h2 className="font-semibold text-ink-900">Assinaturas: esperado × cobrado</h2>
           <span className="text-sm text-ink-500 tnum">
@@ -128,7 +143,7 @@ export default function Fechamento() {
       </section>
 
       {/* Bloco B — Reembolsos devido × pago */}
-      <section className="card">
+      <section id="bloco-reembolsos" className="card scroll-mt-24 transition">
         <div className="flex items-center justify-between border-b border-line px-5 py-3">
           <h2 className="flex items-center gap-2 font-semibold text-ink-900">
             <HandCoins size={18} className="text-data-reembolso" /> Reembolsos: devido × pago
@@ -184,7 +199,7 @@ export default function Fechamento() {
       </section>
 
       {/* Bloco C — Conferência de recibos */}
-      <section className="card">
+      <section id="bloco-recibos" className="card scroll-mt-24 transition">
         <div className="flex items-center justify-between border-b border-line px-5 py-3">
           <h2 className="flex items-center gap-2 font-semibold text-ink-900">
             <FileText size={18} className="text-ink-500" /> Conferência de recibos
