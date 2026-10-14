@@ -1,12 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  Receipt,
-  AlertTriangle,
-  HandCoins,
-  FileWarning,
-  CheckCircle2,
-  ArrowRight,
-} from "lucide-react";
+import { AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
 import { useData } from "../context/DataContext";
 import { useMonth } from "../context/MonthContext";
 import { formatBRL, formatUSD, formatData, nomeMes } from "../lib/format";
@@ -88,27 +81,27 @@ export default function Dashboard() {
           rotulo="Total no mês"
           valor={formatBRL(resumo.totalBRL)}
           detalhe={resumo.totalUSD > 0 ? `+ ${formatUSD(resumo.totalUSD)} (câmbio à parte)` : undefined}
-          icone={<Receipt size={18} />}
+          to="/lancamentos?escopo=mes"
         />
         <StatTile
           rotulo="Assinaturas a cair"
           valor={resumo.assinaturasFaltando}
           tom={resumo.assinaturasFaltando > 0 ? "alerta" : "ok"}
-          icone={<AlertTriangle size={18} />}
+          to="/fechamento?foco=assinaturas"
         />
         <StatTile
           rotulo="Reembolsos pendentes"
           valor={formatBRL(resumo.reembolsosPendentesValor)}
           detalhe={`${resumo.reembolsosPendentesQtd} a pagar`}
           tom={resumo.reembolsosPendentesValor > 0 ? "alerta" : "ok"}
-          icone={<HandCoins size={18} />}
+          to="/fechamento?foco=reembolsos"
         />
         <StatTile
           rotulo="Sem recibo"
           valor={resumo.semReciboQtd}
           detalhe={`${resumo.qtdLancamentos} lançamentos no mês`}
           tom={resumo.semReciboQtd > 0 ? "alerta" : "ok"}
-          icone={<FileWarning size={18} />}
+          to="/lancamentos?recibo=sem"
         />
       </div>
 
